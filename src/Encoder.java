@@ -30,6 +30,7 @@ public class Encoder {
 		}
 		scan.close();
 
+		Huffman.processFile(freqManager);
 	}
 	
 	public static int getFreqSize (ArrayList<Integer> frequencies) {
