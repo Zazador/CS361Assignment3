@@ -21,6 +21,13 @@ public class Encoder {
 			System.out.println(curLine);
 		}
 		totalSum = getFreqSize(freqManager);
+		
+		ArrayList<Double> probManager = new ArrayList<Double>();
+		for (int i = 0; i < freqManager.size(); i++) {
+			double temp = (double) freqManager.get(i)/ (double) totalSum;
+			probManager.add(temp);
+			System.out.println(probManager.get(i));
+		}
 		scan.close();
 
 	}
