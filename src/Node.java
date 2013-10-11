@@ -18,6 +18,7 @@ class Node
         private char    content;
         private Node    left;
         private Node    right;
+        public static HashMap<Character, String> encManager = new HashMap<Character, String>();
 
         public Node(char content, int value)
         {
@@ -49,11 +50,13 @@ class Node
 
         private void printNode(String path)
         {
-                if ((left==null) && (right==null))
-                        System.out.println(content + " " + path);
+                if ((left==null) && (right==null)) {
+                	System.out.println(content + " " + path);
+                        encManager.put(content, path);
+                }
 
                 if (left != null)
-                        left.printNode(path + '0');
+                        left.printNode(path + '0');          
                 if (right != null)
                         right.printNode(path + '1');
         }
@@ -61,6 +64,10 @@ class Node
         public static void printTree(Node tree)
         {
                 tree.printNode("");
+        }
+        
+        public static HashMap<Character, String> getEncManager() {
+        	return encManager;
         }
 }
 

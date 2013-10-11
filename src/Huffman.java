@@ -6,32 +6,32 @@ import java.util.TreeSet;
 
 public class Huffman
 {
-//        public static void main(String[] args)
-//                throws IOException
-//        {
-//                StringBuffer fileContents = new StringBuffer();
+// public static void main(String[] args)
+// throws IOException
+// {
+// StringBuffer fileContents = new StringBuffer();
 //
-//                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+// BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 //
-//                String line = null;
-//                while ((line = br.readLine()) != null)
-//                        fileContents.append("\n").append(line);
+// String line = null;
+// while ((line = br.readLine()) != null)
+// fileContents.append("\n").append(line);
 //
-//                processFile(fileContents.toString());
-//        }
+// processFile(fileContents.toString());
+// }
 
         static void processFile(ArrayList<Integer> probManager)
         {
-//                int[] frequency = new int['Z'-'A'+1];           // Frequency table of each letter
-                TreeSet<Node> trees     = new TreeSet<Node>();  // List containing all trees -- ORDERED!
+// int[] frequency = new int['Z'-'A'+1]; // Frequency table of each letter
+                TreeSet<Node> trees = new TreeSet<Node>(); // List containing all trees -- ORDERED!
 //
-//                // Build the frequency table of each letter
-//                for (int i=0; i<fileContents.length(); i++)
-//                {
-//                        char ch = Character.toUpperCase(fileContents.charAt(i));
-//                        if ((ch >= 'A') && (ch <= 'Z'))
-//                                ++frequency[ch - 'A'];
-//                }
+// // Build the frequency table of each letter
+// for (int i=0; i<fileContents.length(); i++)
+// {
+// char ch = Character.toUpperCase(fileContents.charAt(i));
+// if ((ch >= 'A') && (ch <= 'Z'))
+// ++frequency[ch - 'A'];
+// }
 
                 // Build up the initial trees
                 for (int i=0; i<'Z'-'A'+1; i++)
