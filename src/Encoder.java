@@ -16,6 +16,7 @@ public class Encoder {
 	static int k;
 	private static final File testText = new File("testText.txt");
 	private static final File testTextEncl = new File("testText.encl");
+	private static final File testTextDecl = new File("testText.decl");
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		File file1 = new File(args[0]);
@@ -53,6 +54,13 @@ public class Encoder {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		try {
+			decode();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void encode() throws IOException {
@@ -74,6 +82,30 @@ public class Encoder {
 		
 		Scanner scan2 = new Scanner(testTextEncl);
 		System.out.println("testText.encl: ");
+		while (scan2.hasNextLine()) {
+			s = scan2.nextLine();
+			System.out.print(s);
+		}
+		System.out.println();
+	}
+	
+	public static void decode() throws IOException {
+		BufferedWriter out = new BufferedWriter(new FileWriter(testTextDecl));
+		HashMap<String, Character> decManager = Node.getDecManager();
+		String s;
+		char value;
+		
+		Scanner scan = new Scanner(testTextEncl);
+		while (scan.hasNextLine()) {
+			s = scan.nextLine();
+			value = decManager.get(s);
+			out.write(value);
+			out.newLine();
+		}
+		out.close();
+		
+		Scanner scan2 = new Scanner(testTextDecl);
+		System.out.println("testText.decl: ");
 		while (scan2.hasNextLine()) {
 			s = scan2.nextLine();
 			System.out.print(s);

@@ -19,6 +19,7 @@ class Node
         private Node    left;
         private Node    right;
         public static HashMap<Character, String> encManager = new HashMap<Character, String>();
+        public static HashMap<String, Character> decManager = new HashMap<String, Character>();
 
         public Node(char content, int value)
         {
@@ -53,6 +54,7 @@ class Node
                 if ((left==null) && (right==null)) {
                 	System.out.println(content + " " + path);
                         encManager.put(content, path);
+                        decManager.put(path, content);
                 }
 
                 if (left != null)
@@ -68,6 +70,10 @@ class Node
         
         public static HashMap<Character, String> getEncManager() {
         	return encManager;
+        }
+        
+        public static HashMap<String, Character> getDecManager() {
+        	return decManager;
         }
 }
 
