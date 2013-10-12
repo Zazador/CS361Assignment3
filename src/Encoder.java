@@ -1,9 +1,18 @@
+//Name: Zach Zador
+//email: zazador@gmail.com
+//CSID: sakz
+//UTEID: zaz78
+//
+//Name: Mike Schiller
+//email: schillbs@gmail.com
+//CSID: schiller
+//UTEID: mds3428
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -25,18 +34,22 @@ public class Encoder {
 		k = Integer.parseInt(args[1]);
 		ArrayList<Integer> freqManager = new ArrayList<Integer>();
 
+		// Scan the file for the frequencies of the letters
 		Scanner scan = new Scanner(file1);
 		while (scan.hasNextLine()) {
 			int curLine = Integer.parseInt(scan.nextLine());
 			freqManager.add(curLine);
 		}
+		// Get the sum of all the frequencies
 		totalSum = getFreqSize(freqManager);
 
 		ArrayList<Double> probManager = new ArrayList<Double>();
 		double entropy = 0;
+		// Calculates the probabilities of the letters and calculates entropy
 		for (int i = 0; i < freqManager.size(); i++) {
 			if (freqManager.get(i) > 0)
-				entropy += ((1/(double) freqManager.get(i)) * (Math.log((1/(double)freqManager.get(i))) / Math.log(2)));
+				entropy += ((1 / (double) freqManager.get(i)) * (Math
+						.log((1 / (double) freqManager.get(i))) / Math.log(2)));
 			double temp = (double) freqManager.get(i) / (double) totalSum;
 			probManager.add(temp);
 		}
@@ -44,6 +57,7 @@ public class Encoder {
 		System.out.println("Entropy = " + entropy);
 		scan.close();
 
+		// Computes Huffman algorithm and generates the tree
 		Huffman.processFile(probManager, false);
 		try {
 			stepThree(probManager);
@@ -66,18 +80,20 @@ public class Encoder {
 			e.printStackTrace();
 		}
 
+		// Same process as above, but for two letter symbols
 		entropy = 0;
 		ArrayList<Double> probManager2 = new ArrayList<Double>();
-			for (int i = 0; i < freqManager.size(); i++) {
-				if (freqManager.get(i) > 0)
-					entropy += ((1/(double) freqManager.get(i)) * (Math.log((1/(double)freqManager.get(i))) / Math.log(2)));
-				double temp = (double) probManager.get(i)
-						* (double) probManager.get(i);
-				probManager2.add(temp);
+		for (int i = 0; i < freqManager.size(); i++) {
+			if (freqManager.get(i) > 0)
+				entropy += ((1 / (double) freqManager.get(i)) * (Math
+						.log((1 / (double) freqManager.get(i))) / Math.log(2)));
+			double temp = (double) probManager.get(i)
+					* (double) probManager.get(i);
+			probManager2.add(temp);
 		}
-			
-			entropy *= -1;
-			System.out.println("Entropy = " + entropy);
+
+		entropy *= -1;
+		System.out.println("Entropy = " + entropy);
 
 		Huffman.processFile(probManager2, true);
 
@@ -103,12 +119,14 @@ public class Encoder {
 		}
 	}
 
+	// Encodes the text based on Huffman into a new file
 	public static void encode() throws IOException {
 		BufferedWriter out = new BufferedWriter(new FileWriter(testTextEnc1));
 		HashMap<Character, String> encManager = Node.getEncManager();
 		String s, value;
 		double bitCount = 0, charCount = 0;
 
+		// Encodes the text and computes bits per symbol
 		Scanner scan = new Scanner(testText);
 		System.out.println("testText.txt: ");
 		while (scan.hasNextLine()) {
@@ -121,9 +139,10 @@ public class Encoder {
 			charCount++;
 		}
 		System.out.println();
-		System.out.println("Bits per symbol = " + (bitCount/charCount));
+		System.out.println("Bits per symbol = " + (bitCount / charCount));
 		out.close();
 
+		// Print results
 		Scanner scan2 = new Scanner(testTextEnc1);
 		System.out.println("testText.enc1: ");
 		while (scan2.hasNextLine()) {
@@ -133,12 +152,14 @@ public class Encoder {
 		System.out.println();
 	}
 
+	// Decode the text based on Huffman into a new file
 	public static void decode() throws IOException {
 		BufferedWriter out = new BufferedWriter(new FileWriter(testTextDec1));
 		HashMap<String, Character> decManager = Node.getDecManager();
 		String s;
 		char value;
 
+		// Write the decoding to a new file
 		Scanner scan = new Scanner(testTextEnc1);
 		while (scan.hasNextLine()) {
 			s = scan.nextLine();
@@ -148,6 +169,7 @@ public class Encoder {
 		}
 		out.close();
 
+		// Print results
 		Scanner scan2 = new Scanner(testTextDec1);
 		System.out.println("testText.dec1: ");
 		while (scan2.hasNextLine()) {
@@ -157,6 +179,7 @@ public class Encoder {
 		System.out.println();
 	}
 
+	// Generates the testText file
 	public static void stepThree(ArrayList<Double> probManager)
 			throws IOException {
 		BufferedWriter out = new BufferedWriter(new FileWriter(testText));
@@ -164,6 +187,7 @@ public class Encoder {
 		Random rand = new Random();
 		double newRan, counter = 0;
 
+		// From k characters, generates a file of random letters
 		for (i = 0; i < k; i++) {
 			ran = rand.nextInt(totalSum - 1);
 			newRan = (double) ran / (double) totalSum;
@@ -184,6 +208,7 @@ public class Encoder {
 		out.close();
 	}
 
+	// Same as original stepThree, but adds compatibility for two letter symbols
 	public static void stepThreeRedux(ArrayList<Double> probManager)
 			throws IOException {
 		BufferedWriter out = new BufferedWriter(new FileWriter(testText2));
@@ -210,6 +235,7 @@ public class Encoder {
 		out.close();
 	}
 
+	// Same as original encode, but adds compatibility for two letter symbols
 	public static void encode2() throws IOException {
 		BufferedWriter out = new BufferedWriter(new FileWriter(testTextEnc2));
 		HashMap<String, String> encManager = Node.getEncManager2();
@@ -236,6 +262,7 @@ public class Encoder {
 		System.out.println();
 	}
 
+	// Same as original decode, but adds compatibility for two letter symbols
 	public static void decode2() throws IOException {
 		BufferedWriter out = new BufferedWriter(new FileWriter(testTextDec2));
 		HashMap<String, String> decManager = Node.getDecManager2();
@@ -259,6 +286,7 @@ public class Encoder {
 		System.out.println();
 	}
 
+	// Gets the sum of all the frequencies
 	public static int getFreqSize(ArrayList<Integer> frequencies) {
 		int sum = 0;
 

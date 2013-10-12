@@ -1,47 +1,40 @@
+//Name: Zach Zador
+//email: zazador@gmail.com
+//CSID: sakz
+//UTEID: zaz78
+//
+//Name: Mike Schiller
+//email: schillbs@gmail.com
+//CSID: schiller
+//UTEID: mds3428
+
+/*
+ * Huffman Algorithm for the DEI's Programming Contest, 2004
+ * (c) Paulo Marques, 2004.
+ * pmarques@dei.uc.pt
+ *
+ * Note: this program only process text characters:
+ *       ('a'-'z' / 'A'-'Z'). Everything else is ignored.
+ */
+
 import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class Huffman {
-	// public static void main(String[] args)
-	// throws IOException
-	// {
-	// StringBuffer fileContents = new StringBuffer();
-	//
-	// BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	//
-	// String line = null;
-	// while ((line = br.readLine()) != null)
-	// fileContents.append("\n").append(line);
-	//
-	// processFile(fileContents.toString());
-	// }
-	
+
 	public static ArrayList<String> tuples = new ArrayList<String>();
 
 	static void processFile(ArrayList<Double> probManager, boolean two) {
-		// int[] frequency = new int['Z'-'A'+1]; // Frequency table of each
-		// letter
+
 		TreeSet<Node> trees = new TreeSet<Node>(); // List containing all trees
 													// -- ORDERED!
-		
 		TreeSet<Node> trees2 = new TreeSet<Node>();
-		
 
-		//
-		// // Build the frequency table of each letter
-		// for (int i=0; i<fileContents.length(); i++)
-		// {
-		// char ch = Character.toUpperCase(fileContents.charAt(i));
-		// if ((ch >= 'A') && (ch <= 'Z'))
-		// ++frequency[ch - 'A'];
-		// }
-
-		
 		if (!two) {
 			// Build up the initial trees
 			for (int i = 0; i < 'Z' - 'A' + 1; i++) {
-//				System.out.println(probManager.get(i));
-//				System.out.println((char) ('A' + i));
+				// System.out.println(probManager.get(i));
+				// System.out.println((char) ('A' + i));
 				if (probManager.get(i) > 0) {
 					Node n = new Node((char) ('A' + i), probManager.get(i));
 					trees.add(n);
@@ -77,7 +70,7 @@ public class Huffman {
 				trees.add(merged);
 			}
 		} else if (two) {
-			// Huffman algorithm
+			// Huffman algorithm for two letter symbols
 			while (trees2.size() > 1) {
 				Node tree1 = (Node) trees2.first();
 				trees2.remove(tree1);
@@ -89,24 +82,23 @@ public class Huffman {
 			}
 		}
 
-			if (!two) {
-				// Print the resulting tree
-				if (trees.size() > 0) {
-					Node theTree = (Node) trees.first();
-					Node.printTree(theTree, false);
-				}
-			} else if (two) {
-				// Print the resulting tree
-				if (trees2.size() > 0) {
-					Node theTree = (Node) trees2.first();
-					Node.printTree(theTree, true);
-				}
-			} else
-				System.out
-						.println("The file didn't contain useful characters.");
-		}
-	
+		if (!two) {
+			// Print the resulting tree
+			if (trees.size() > 0) {
+				Node theTree = (Node) trees.first();
+				Node.printTree(theTree, false);
+			}
+		} else if (two) {
+			// Print the resulting tree of two letter symbols
+			if (trees2.size() > 0) {
+				Node theTree = (Node) trees2.first();
+				Node.printTree(theTree, true);
+			}
+		} else
+			System.out.println("The file didn't contain useful characters.");
+	}
+
 	public static ArrayList<String> getTuples() {
 		return tuples;
 	}
-	}
+}
