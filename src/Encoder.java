@@ -28,6 +28,10 @@ public class Encoder {
 	private static final File testText2 = new File("testText2.txt");
 	private static final File testTextEnc2 = new File("testText.enc2");
 	private static final File testTextDec2 = new File("testText.dec2");
+	public static double entropy1;
+	public static double entropy2;
+	public static double bps1;
+	public static double bps2;
 
 	public static void main(String[] args) throws FileNotFoundException {
 		File file1 = new File(args[0]);
@@ -44,17 +48,15 @@ public class Encoder {
 		totalSum = getFreqSize(freqManager);
 
 		ArrayList<Double> probManager = new ArrayList<Double>();
-		double entropy = 0;
 		// Calculates the probabilities of the letters and calculates entropy
 		for (int i = 0; i < freqManager.size(); i++) {
 			if (freqManager.get(i) > 0)
-				entropy += ((1 / (double) freqManager.get(i)) * (Math
+				entropy1 += ((1 / (double) freqManager.get(i)) * (Math
 						.log((1 / (double) freqManager.get(i))) / Math.log(2)));
 			double temp = (double) freqManager.get(i) / (double) totalSum;
 			probManager.add(temp);
 		}
-		entropy *= -1;
-		System.out.println("Entropy = " + entropy);
+		entropy1 *= -1;
 		scan.close();
 
 		// Computes Huffman algorithm and generates the tree
@@ -81,19 +83,17 @@ public class Encoder {
 		}
 
 		// Same process as above, but for two letter symbols
-		entropy = 0;
 		ArrayList<Double> probManager2 = new ArrayList<Double>();
 		for (int i = 0; i < freqManager.size(); i++) {
 			if (freqManager.get(i) > 0)
-				entropy += ((1 / (double) freqManager.get(i)) * (Math
+				entropy2 += ((1 / (double) freqManager.get(i)) * (Math
 						.log((1 / (double) freqManager.get(i))) / Math.log(2)));
 			double temp = (double) probManager.get(i)
 					* (double) probManager.get(i);
 			probManager2.add(temp);
 		}
 
-		entropy *= -1;
-		System.out.println("Entropy = " + entropy);
+		entropy2 *= -1;
 
 		Huffman.processFile(probManager2, true);
 
@@ -117,6 +117,11 @@ public class Encoder {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		System.out.println("Entropy for one letter symbols: " + entropy1);
+		System.out.println("Bits per symbol for one letter symbols: " + bps1);
+		System.out.println("Entropy for two letter symbols: " + entropy2);
+		System.out.println("Bits per symbol for two letter symbols: " + bps2);
 	}
 
 	// Encodes the text based on Huffman into a new file
@@ -139,7 +144,7 @@ public class Encoder {
 			charCount++;
 		}
 		System.out.println();
-		System.out.println("Bits per symbol = " + (bitCount / charCount));
+		bps1 = (bitCount / charCount);
 		out.close();
 
 		// Print results
@@ -240,6 +245,7 @@ public class Encoder {
 		BufferedWriter out = new BufferedWriter(new FileWriter(testTextEnc2));
 		HashMap<String, String> encManager = Node.getEncManager2();
 		String s, value;
+		double bitCount = 0, charCount = 0;
 
 		Scanner scan = new Scanner(testText2);
 		System.out.println("testText2.txt: ");
@@ -249,8 +255,11 @@ public class Encoder {
 			value = encManager.get(s);
 			out.write(value);
 			out.newLine();
+			bitCount += value.length();
+			charCount++;
 		}
 		System.out.println();
+		bps2 = (bitCount / charCount);
 		out.close();
 
 		Scanner scan2 = new Scanner(testTextEnc2);

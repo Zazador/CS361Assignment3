@@ -56,8 +56,6 @@ public class Huffman {
 				}
 			}
 		}
-
-		System.out.println(trees.size());
 		if (!two) {
 			// Huffman algorithm
 			while (trees.size() > 1) {
